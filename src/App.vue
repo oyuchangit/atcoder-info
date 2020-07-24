@@ -77,7 +77,7 @@ a:visited{
   color:#7F6C68;
 }
 a:hover{
-    color : #928886;
+    color : #b8b0af;
 }
 
 .input{

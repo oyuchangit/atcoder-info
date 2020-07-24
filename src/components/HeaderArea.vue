@@ -3,7 +3,7 @@
     <div class="headerArea">
         <h3 class="title">AtCoder Info.</h3>
         <ul class="nav">
-            <li class="menuItem"><a href="#">GitHub</a></li>
+            <li class="menuItem"><a href="https://github.com/oyuchangit/atcoder-info">GitHub</a></li>
             <li class="menuItem"><a href="https://atcoder.jp/">Atcoder</a></li>
         </ul>
     </div>

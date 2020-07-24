@@ -130,7 +130,7 @@ export default {
                             problemsInfoRecord['p' + currProblemNum + '_results_tooltip'] = '';
 
                             // セルのClassを設定
-                            problemsInfoRecord['p' + currProblemNum + '_class'] = 'problemTableCell tableCell';
+                            problemsInfoRecord['p' + currProblemNum + '_class'] = 'problemTableCell tableCell notAC';
 
                             // 問題の回答済みフラグを初期化
                             problemsInfoRecord['p' + currProblemNum + '_hasResult'] = false
@@ -161,7 +161,7 @@ export default {
                     const problemResult = problemType + '_results';
                     this.problemsInfoTable[i][problemResult] = '';
                     const problemClass = problemType + '_class';
-                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell';
+                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell notAC';
                     const problemResultTooltip = problemType + '_results_tooltip';
                     this.problemsInfoTable[i][problemResultTooltip] = '';
                     const hasResult = problemType + '_hasResult';
@@ -254,7 +254,7 @@ export default {
                     if (curr_result === 'AC'){
                         const cellClass = problemType + '_class';
                         const acClassName = ' td_ac'
-                        this.problemsInfoTable[curr_table_index][cellClass] += acClassName
+                        this.problemsInfoTable[curr_table_index][cellClass] = 'problemTableCell tableCell' + acClassName;
                     }
 
                 }
@@ -296,10 +296,24 @@ export default {
     background-color: white;
     color: #7F6C68;
 }
-a.resultLink{
-    color: #7F6C68;
+.resultLink{
     font-weight: bold;
 }
+
+
+
+.notAC .resultLink{
+    color: #E73825;
+    font-weight: bold;
+}
+.notAC .resultLink:visited{
+    color: #E73825;
+    font-weight: bold;
+}
+.notAC .resultLink:hover{
+    color: #f16758;
+}
+
 a.resultLink:visited{
     color: #7F6C68;
 }
