@@ -130,10 +130,14 @@ export default {
                             problemsInfoRecord['p' + currProblemNum + '_results_tooltip'] = '';
 
                             // セルのClassを設定
-                            problemsInfoRecord['p' + currProblemNum + '_class'] = 'problemTableCell tableCell notAC';
+                            problemsInfoRecord['p' + currProblemNum + '_class'] = 'problemTableCell tableCell';
 
                             // 問題の回答済みフラグを初期化
                             problemsInfoRecord['p' + currProblemNum + '_hasResult'] = false
+
+                            // AC済みフラグを初期化
+                            problemsInfoRecord['p' + currProblemNum + '_hasAC'] = false
+
 
                             currProblemNum += 1;
                         }
@@ -161,11 +165,13 @@ export default {
                     const problemResult = problemType + '_results';
                     this.problemsInfoTable[i][problemResult] = '';
                     const problemClass = problemType + '_class';
-                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell notAC';
+                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell';
                     const problemResultTooltip = problemType + '_results_tooltip';
                     this.problemsInfoTable[i][problemResultTooltip] = '';
                     const hasResult = problemType + '_hasResult';
                     this.problemsInfoTable[i][hasResult] = false;
+                    const hasAC = problemType + '_hasAC';
+                    this.problemsInfoTable[i][hasAC] = false;
                 }
             }
 
@@ -250,11 +256,23 @@ export default {
                     const toolTipConetnts = this.makeToolTipContent(currResultsTooptip, curr_result + ':' + curr_datetime);
                     this.problemsInfoTable[curr_table_index][problemResultsTooltip] = toolTipConetnts;
 
+
+                    // セルの色を変える
+                    const defaultCellClass = 'problemTableCell tableCell'
+                    const cellClass = problemType + '_class';
+                    const hasAC = problemType + '_hasAC'
+                    
+                    // 未ACならnotACのクラスを付与
+                    if (!this.problemsInfoTable[curr_table_index][hasAC]){
+                        const notACClassName = ' notAC'
+                        this.problemsInfoTable[curr_table_index][cellClass] = defaultCellClass + notACClassName;
+                    }
+
                     // ACが一つでもあった場合、色を変える
                     if (curr_result === 'AC'){
-                        const cellClass = problemType + '_class';
                         const acClassName = ' td_ac'
-                        this.problemsInfoTable[curr_table_index][cellClass] = 'problemTableCell tableCell' + acClassName;
+                        this.problemsInfoTable[curr_table_index][cellClass] = defaultCellClass + acClassName;
+                        this.problemsInfoTable[curr_table_index][hasAC] = true
                     }
 
                 }
@@ -272,6 +290,16 @@ export default {
 .td_ac{
     background-color: #AACBC1;
 }
+.td_ac .resultLink{
+    color:#2c6e5a;
+}
+.td_ac .resultLink:visited{
+    color:#2c6e5a;
+}
+.td_ac .resultLink:hover{
+    color:#749e91;
+}
+
 .td_ac p{
     background-color: #AACBC1;
 }
@@ -300,8 +328,6 @@ export default {
     font-weight: bold;
 }
 
-
-
 .notAC .resultLink{
     color: #E73825;
     font-weight: bold;
@@ -312,6 +338,15 @@ export default {
 }
 .notAC .resultLink:hover{
     color: #f16758;
+}
+.notAC{
+    background-color: #eeb5ae;
+}
+.notAC p{
+    background-color: #eeb5ae;
+}
+.notAC a{
+    background-color: #eeb5ae;
 }
 
 a.resultLink:visited{
