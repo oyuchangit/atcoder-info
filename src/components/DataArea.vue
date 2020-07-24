@@ -6,7 +6,6 @@
             <span style="font-weight: bold;">{{countAC}}</span>
             /{{countProblems}}
         </div>
-        More info
         <table class="abc_data">
         <tbody>
             <tr v-for="problemInfo in problemsInfoTable" :key="problemInfo.contest_id">
