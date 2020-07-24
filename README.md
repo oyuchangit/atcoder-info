@@ -5,7 +5,8 @@ AtCoder Info. is a web application powered by Vue.js that shows each user's prog
 
 # DEMO
 
-![atcoderinfo](https://user-images.githubusercontent.com/44371084/88398296-29831600-ce00-11ea-9379-0704b3f8bcd5.gif)
+![atcoderinfo_20200725](https://user-images.githubusercontent.com/44371084/88405466-4886a580-ce0a-11ea-83ff-1bb02ea66a6b.gif)
+
 
 
 # Note
