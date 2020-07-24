@@ -41,7 +41,7 @@ export default{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #352E2B;
+  color: #7F6C68;
   /* margin-top: 60px; */
 }
 

@@ -1,5 +1,12 @@
 <template>
     <div class="dataArea">
+        <div style="height: 30px;">
+            Number of 
+            <span style="font-weight: bold; color: #2c6e5a;">AC</span>cepted problems: 
+            <span style="font-weight: bold;">{{countAC}}</span>
+            /{{countProblems}}
+        </div>
+        More info
         <table class="abc_data">
         <tbody>
             <tr v-for="problemInfo in problemsInfoTable" :key="problemInfo.contest_id">
@@ -61,7 +68,13 @@ export default {
             problemsInfoTable: [],
 
             // コンテストIdと、画面描画用に加工したデータの行番号のマッピング
-            mappingConstestAndIndex: []
+            mappingConstestAndIndex: [],
+
+            // 画面表示用AC数
+            countAC: 0,
+
+            // 問題総数
+            countProblems: 0
         }
     },
     methods: {
@@ -87,10 +100,15 @@ export default {
                     });
 
                     let currProblemNum = 0
+
+                    // テーブル作成
                     for (let i = 0; i < problemsInfo.length; i++){
 
                         // ABCだけ対象にする
                         if(problemsInfo[i].contest_id.indexOf('abc') !== -1){
+
+                            // 問題数の追加
+                            this.countProblems += 1
 
 
                             // 違うコンテストになったときの処理
@@ -156,6 +174,7 @@ export default {
             })
 
         },
+        // テーブル情報初期化
         initProblemsInfoTable: function(){
             const len_problemsInfoTable = this.problemsInfoTable.length;
             for (let i = 0; i < len_problemsInfoTable; i++){
@@ -174,6 +193,9 @@ export default {
                     this.problemsInfoTable[i][hasAC] = false;
                 }
             }
+
+            // AC数の初期化
+            this.countAC = 0;
 
         },
         getDateTimeByEpochSecond: function(epoch_second){
@@ -268,11 +290,19 @@ export default {
                         this.problemsInfoTable[curr_table_index][cellClass] = defaultCellClass + notACClassName;
                     }
 
-                    // ACが一つでもあった場合、色を変える
+                    // ACが一つでもあった場合の処理
                     if (curr_result === 'AC'){
+
+                        // その問題で出現した初めてのACだったとき、AC総数に1をプラスする
+                        if(!this.problemsInfoTable[curr_table_index][hasAC]){
+                            this.countAC += 1
+                        }
+
+                        // セルのスタイルを設定する
                         const acClassName = ' td_ac'
                         this.problemsInfoTable[curr_table_index][cellClass] = defaultCellClass + acClassName;
                         this.problemsInfoTable[curr_table_index][hasAC] = true
+
                     }
 
                 }
