@@ -1,9 +1,13 @@
 <template>
   <div id="app">
+    <div id="app">
+      <font-awesome-icon icon="user-secret" />
+    </div>
     <HeaderArea/>
     <SearchArea @getUserInfo="getUserInfo"/>
     <SelectArea/>
     <DataArea :userInfo="userInfo" class="dataArea"/>
+
   </div>
 </template>
 
@@ -14,7 +18,9 @@ import SearchArea from './components/SearchArea'
 import SelectArea from './components/SelectArea'
 import DataArea from './components/DataArea'
 
+
 export default{
+  name: 'App',
   components: {
     HeaderArea,
     SearchArea,
@@ -41,18 +47,18 @@ export default{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #7F6C68;
+  color: #504548;
   /* margin-top: 60px; */
 }
 
 
 body{
     background-color: white;
-    color: #7F6C68;
+    color: #504548;
 }
 header{
     background-color: #AEAFAF;
-    color: #7F6C68;
+    color: #504548;
 }
 table{
     width: 100%;
@@ -63,21 +69,22 @@ table tr *{
 }
 table th,table td{
     color: #4A150D;
-    border:solid 1px #7F6C68;
+    border:solid 1px #bbb4b8;
     text-align: center;
-    padding: 10px 0;
+    padding: 5px 0;
     width: 13vw;
 }
 
 a{
     text-decoration: none;
-    color: #7F6C68;
+    color: #504548;
 }
 a:visited{
-  color:#7F6C68;
+  color:#3a262c;
 }
 a:hover{
-    color : #b8b0af;
+    color : #867e80;
+
 }
 
 .input{
@@ -85,18 +92,19 @@ a:hover{
     padding: 10px 15px; /*ボックスを大きくする*/
     font-size: 16px;
     /* border-radius: 4px; ボックス角の丸み */
-    border: 0.5px solid #7F6C68; /*枠線*/
+    border: 1px solid #756D74; /*枠線*/
     background-color: white;
     box-sizing: border-box; /*横幅の解釈をpadding, borderまでとする*/
-    color: #7F6C68;
+    color: #504548;
+    border-radius: 2px;
 }
 .input::placeholder {
-  color: #C5C8C4;
+  color: #D8D6DE;
 }
 .input:focus {
-    border: 1px solid #7F6C68; 
     z-index: 10;
     outline: 0;
+    box-shadow: 0 0 3px 0 #7F6C68;
 }
 
 

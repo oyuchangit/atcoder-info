@@ -1,11 +1,6 @@
 <template>
     <div class="dataArea">
-        <div style="height: 30px;">
-            Number of 
-            <span style="font-weight: bold; color: #2c6e5a;">AC</span>cepted problems: 
-            <span style="font-weight: bold;">{{countAC}}</span>
-            /{{countProblems}}
-        </div>
+        <DetailInfoArea :detailInfo="detailInfo"/>
         <table class="abc_data">
         <tbody>
             <tr v-for="problemInfo in problemsInfoTable" :key="problemInfo.contest_id">
@@ -13,32 +8,32 @@
                     <p :class="problemInfo.p0_status"><a :href="problemInfo.contest_url" target="_blank" rel="noopener noreferrer">{{problemInfo.contest_id}}</a></p>
                 </td>
                 <td :class="problemInfo.p0_class"><a :href="problemInfo.p0_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p0_title}}</a>
-                    <p v-if="problemInfo.p0_hasResult" v-tooltip.bottom="problemInfo.p0_results_tooltip">
+                    <p v-if="problemInfo.p0_hasResult" v-tooltip.bottom="problemInfo.p0_results_tooltip" class="resultP">
                         <a :href="problemInfo.p0_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p0_results}}</a>
                     </p>
                 </td>
                 <td :class="problemInfo.p1_class"><a :href="problemInfo.p1_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p1_title}}</a>
-                    <p v-if="problemInfo.p1_hasResult" v-tooltip.bottom="problemInfo.p1_results_tooltip">
+                    <p v-if="problemInfo.p1_hasResult" v-tooltip.bottom="problemInfo.p1_results_tooltip" class="resultP">
                         <a :href="problemInfo.p1_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p1_results}}</a>
                     </p>
                 </td>
                 <td :class="problemInfo.p2_class"><a :href="problemInfo.p2_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p2_title}}</a>
-                    <p v-if="problemInfo.p2_hasResult" v-tooltip.bottom="problemInfo.p2_results_tooltip">
+                    <p v-if="problemInfo.p2_hasResult" v-tooltip.bottom="problemInfo.p2_results_tooltip" class="resultP">
                         <a :href="problemInfo.p2_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p2_results}}</a>
                     </p>
                 </td>
                 <td :class="problemInfo.p3_class"><a :href="problemInfo.p3_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p3_title}}</a>
-                    <p v-if="problemInfo.p3_hasResult" v-tooltip.bottom="problemInfo.p3_results_tooltip">
+                    <p v-if="problemInfo.p3_hasResult" v-tooltip.bottom="problemInfo.p3_results_tooltip" class="resultP">
                         <a :href="problemInfo.p3_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p3_results}}</a>
                     </p>
                 </td>
                 <td :class="problemInfo.p4_class"><a :href="problemInfo.p4_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p4_title}}</a>
-                    <p v-if="problemInfo.p4_hasResult" v-tooltip.bottom="problemInfo.p4_results_tooltip">
+                    <p v-if="problemInfo.p4_hasResult" v-tooltip.bottom="problemInfo.p4_results_tooltip" class="resultP">
                         <a :href="problemInfo.p4_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p4_results}}</a>
                     </p>
                 </td>
                 <td :class="problemInfo.p5_class"><a :href="problemInfo.p5_url" target="_blank" rel="noopener noreferrer">{{problemInfo.p5_title}}</a>
-                    <p v-if="problemInfo.p5_hasResult" v-tooltip.bottom="problemInfo.p5_results_tooltip">
+                    <p v-if="problemInfo.p5_hasResult" v-tooltip.bottom="problemInfo.p5_results_tooltip" class="resultP">
                         <a :href="problemInfo.p5_resultURL" target="_blank" rel="noopener noreferrer" class="resultLink">{{problemInfo.p5_results}}</a>
                     </p>
                 </td>
@@ -52,9 +47,13 @@
 <script>
 import Vue from 'vue'
 import VTooltip from 'v-tooltip'
+import DetailInfoArea from './DetailInfoArea'
 Vue.use(VTooltip)
 
 export default {
+    components: {
+        DetailInfoArea
+    },
     props: {
         userInfo: Array
     },
@@ -69,11 +68,23 @@ export default {
             // コンテストIdと、画面描画用に加工したデータの行番号のマッピング
             mappingConstestAndIndex: [],
 
-            // 画面表示用AC数
-            countAC: 0,
 
-            // 問題総数
-            countProblems: 0
+            detailInfo: {
+                // 画面表示用AC数
+                countAC: 0,
+
+                // 問題総数
+                countProblems: 0,
+
+                // 
+                totalAC:0,
+                totalWA:0,
+                totalTLE:0,
+                totalRE:0,
+                totalSolved:0,
+                totalSubmit:0
+
+            },
         }
     },
     methods: {
@@ -107,7 +118,7 @@ export default {
                         if(problemsInfo[i].contest_id.indexOf('abc') !== -1){
 
                             // 問題数の追加
-                            this.countProblems += 1
+                            this.detailInfo.countProblems += 1
 
 
                             // 違うコンテストになったときの処理
@@ -194,7 +205,14 @@ export default {
             }
 
             // AC数の初期化
-            this.countAC = 0;
+            this.detailInfo.countAC = 0;
+            // this.detailInfo.countProblems = 0;
+            this.detailInfo.totalAC = 0;
+            this.detailInfo.totalWA = 0;
+            this.detailInfo.totalTLE = 0;
+            this.detailInfo.totalRE = 0;
+            this.detailInfo.totalSolved = 0;
+            this.detailInfo.totalSubmit = 0;
 
         },
         getDateTimeByEpochSecond: function(epoch_second){
@@ -206,7 +224,7 @@ export default {
             else{return currentContent + '<br>' + addingContent;}
         }
     },
-    
+
     created() {
         this.initDataArea();
     },
@@ -225,9 +243,6 @@ export default {
                 });
             }
             desSortByEpochSecond();
-
-
-            console.log(userInfo_dup);
 
 
             const len_userInfo = userInfo_dup.length;
@@ -259,13 +274,37 @@ export default {
                     let currResults = this.problemsInfoTable[curr_table_index][problemResults];
                     this.problemsInfoTable[curr_table_index][problemResults] = currResults + ' ' + curr_result;
 
-                    // 回答済みフラグを立てる
+                    // 回答情報を更新
+                    const AC = 'AC'
+                    const WA = 'WA'
+                    const TLE = 'TLE'
+                    const RE = 'RE'
+                    if(curr_result === AC){
+                        this.detailInfo.totalAC += 1;
+                    }
+                    else if(curr_result === WA){
+                        this.detailInfo.totalWA += 1;
+                    }
+                    else if(curr_result === TLE){
+                        this.detailInfo.totalTLE += 1;
+                    }
+                    else if(curr_result === RE){
+                        this.detailInfo.totalRE += 1;
+                    }
+                    this.detailInfo.totalSubmit += 1;
+
+                    // 回答済み問題総数
                     const hasResult = problemType + '_hasResult';
+                    if(!this.problemsInfoTable[curr_table_index][hasResult]){
+                        this.detailInfo.totalSolved += 1;
+                    }
+
+                    // 回答済みフラグを立てる
                     this.problemsInfoTable[curr_table_index][hasResult] = true;
 
                     const resultURL = problemType + '_resultURL';
                     const userId = userInfo_dup[i].user_id
-                    const resultURLText = 'https://atcoder.jp/contests/' + curr_constest_id + '/submissions?f.Task=' 
+                    const resultURLText = 'https://atcoder.jp/contests/' + curr_constest_id + '/submissions?f.Task='
                                             + curr_problem_id + '&f.Language=&f.Status=&f.User=' + userId
                     this.problemsInfoTable[curr_table_index][resultURL] = resultURLText
 
@@ -282,7 +321,7 @@ export default {
                     const defaultCellClass = 'problemTableCell tableCell'
                     const cellClass = problemType + '_class';
                     const hasAC = problemType + '_hasAC'
-                    
+
                     // 未ACならnotACのクラスを付与
                     if (!this.problemsInfoTable[curr_table_index][hasAC]){
                         const notACClassName = ' notAC'
@@ -294,7 +333,8 @@ export default {
 
                         // その問題で出現した初めてのACだったとき、AC総数に1をプラスする
                         if(!this.problemsInfoTable[curr_table_index][hasAC]){
-                            this.countAC += 1
+
+                            this.detailInfo.countAC += 1
                         }
 
                         // セルのスタイルを設定する
@@ -316,29 +356,38 @@ export default {
 .dataArea{
     margin-top: 90px;
 }
+
+.dataArea a:hover{
+    border-bottom: solid;
+    border-width: 1px;
+
+}
+
+
 .td_ac{
-    background-color: #AACBC1;
+    background-color: #D2DDF1;
 }
 .td_ac .resultLink{
-    color:#2c6e5a;
+    color:#4b5b7c;
 }
 .td_ac .resultLink:visited{
-    color:#2c6e5a;
+    color:#4b5b7c;
 }
 .td_ac .resultLink:hover{
-    color:#749e91;
+    color:#8892a7;
+    border-color: #8892a7;
+
 }
 
 .td_ac p{
-    background-color: #AACBC1;
+    background-color: #D2DDF1;
 }
 .td_ac a{
-    background-color: #AACBC1;
+    background-color: #D2DDF1;
 }
 .tableCell{
     display: table-cell;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0px auto;
 
 }
 .problemIdTableCell{
@@ -358,31 +407,41 @@ export default {
 }
 
 .notAC .resultLink{
-    color: #E73825;
+    color: #7c4141;
     font-weight: bold;
 }
 .notAC .resultLink:visited{
-    color: #E73825;
+    color: #7c4141;
     font-weight: bold;
 }
 .notAC .resultLink:hover{
-    color: #f16758;
+    color: #ac8282;
+    border-color: #ac8282;
+
 }
 .notAC{
-    background-color: #eeb5ae;
+    background-color: #f1d2d2;
 }
 .notAC p{
-    background-color: #eeb5ae;
+    background-color: #f1d2d2;
 }
 .notAC a{
-    background-color: #eeb5ae;
+    background-color: #f1d2d2;
 }
+
+.resultP{
+    margin:5px auto;
+}
+
 
 a.resultLink:visited{
     color: #7F6C68;
 }
 a.resultLink:hover{
     color: #958a88;
+    border-bottom: solid;
+    border-width: 1px;
+
 }
 
 .problemTableCell{
@@ -390,9 +449,10 @@ a.resultLink:hover{
 }
 
 
-@media only screen and (max-width: 550px) { 
-    .abc_data { 
-        margin: auto; 
+
+@media only screen and (max-width: 550px) {
+    .abc_data {
+        margin: auto;
         }
     .abc_data tr {
         display:block;
@@ -422,7 +482,7 @@ a.resultLink:hover{
         background-color: #AEAFAF;
     }
 
-  
+
 }
 
 

@@ -16,8 +16,8 @@ header{
     top: 0;
     left: 0;
     right: 0;
-    background: #C5C8C4;
-    color: white;
+    background: #3A3C4C;
+    color: #D2DDF1;
     width: 100%;
     height: 40px;
 }
@@ -33,7 +33,6 @@ header{
     margin-right: auto;
     display: inline-block;
     padding-left: 15px;
-    color: #E73825;
 }
 .menuItem{
     list-style: none;
@@ -45,17 +44,17 @@ header{
 
 
 a{
-    color:white;
+    color:#D8D6DE;
 }
 
 
 a:hover{
-    color:white;
+    color:#D8D6DE;
     text-decoration: underline;
 }
 
 a:visited{
-    color:white;
+    color:#D8D6DE;
 }
 
 </style>
