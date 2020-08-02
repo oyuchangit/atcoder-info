@@ -21,7 +21,7 @@
             </div>
 
             <div class="detailDiv">
-                <div><h3>Number of submission</h3></div>
+                <div><h3>Number of submissions</h3></div>
                 <div class="infoArea">
                     <div>
                         <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSubmit}}</span> 
@@ -49,7 +49,7 @@
 
             </div>
             <div class="detailDiv">
-                <div><h3>Number of result</h3></div>
+                <div><h3>Number of results</h3></div>
                 <div>
                     <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSolved}}</span>
                 </div>
