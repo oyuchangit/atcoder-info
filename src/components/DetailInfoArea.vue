@@ -14,6 +14,13 @@
 
         <div v-if="this.detailInfoArea.isVisible" class="detailArea">
             <div class="detailDiv">
+                <div><h3>Total problems</h3></div>
+                <div>
+                    <div class="totalProblems"><h3>{{this.detailInfo.countProblems}}</h3></div>
+                </div>
+            </div>
+
+            <div class="detailDiv">
                 <div><h3>Number of submission</h3></div>
                 <div class="infoArea">
                     <div>
@@ -57,6 +64,7 @@
 
 
             </div>
+
         </div>
       
     </div>
@@ -155,6 +163,9 @@ export default {
     margin-top: 5px;
     font-size: small;
     width: 180px;
+}
+.detailDiv .totalProblems{
+    text-align: center;
 }
 
 </style>
