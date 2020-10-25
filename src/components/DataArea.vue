@@ -55,7 +55,8 @@ export default {
         DetailInfoArea
     },
     props: {
-        userInfo: Array
+        userInfo: Array,
+        dateInfo: Object
     },
     data() {
         return {
@@ -76,7 +77,7 @@ export default {
                 // 問題総数
                 countProblems: 0,
 
-                // 
+                
                 totalAC:0,
                 totalWA:0,
                 totalTLE:0,
@@ -85,9 +86,20 @@ export default {
                 totalSubmit:0
 
             },
+            
+            // データエリア用日付情報
+            dateInfoDataArea: {
+                from: {
+                    selectedDate: new Date(2013, 10, 12, 21, 0, 0)
+                },
+                to: {
+                    selectedDate: new Date()
+                }
+            }
         }
     },
     methods: {
+        // テーブルエリア初期化
         initDataArea: function(){
             const url = 'https://kenkoooo.com/atcoder/resources/problems.json'
 
@@ -183,53 +195,13 @@ export default {
 
             })
 
-        },
-        // テーブル情報初期化
-        initProblemsInfoTable: function(){
-            const len_problemsInfoTable = this.problemsInfoTable.length;
-            for (let i = 0; i < len_problemsInfoTable; i++){
-
-                for (let j=0; j<6; j++){
-                    const problemType = 'p' + j;
-                    const problemResult = problemType + '_results';
-                    this.problemsInfoTable[i][problemResult] = '';
-                    const problemClass = problemType + '_class';
-                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell';
-                    const problemResultTooltip = problemType + '_results_tooltip';
-                    this.problemsInfoTable[i][problemResultTooltip] = '';
-                    const hasResult = problemType + '_hasResult';
-                    this.problemsInfoTable[i][hasResult] = false;
-                    const hasAC = problemType + '_hasAC';
-                    this.problemsInfoTable[i][hasAC] = false;
-                }
-            }
-
-            // AC数の初期化
-            this.detailInfo.countAC = 0;
-            // this.detailInfo.countProblems = 0;
-            this.detailInfo.totalAC = 0;
-            this.detailInfo.totalWA = 0;
-            this.detailInfo.totalTLE = 0;
-            this.detailInfo.totalRE = 0;
-            this.detailInfo.totalSolved = 0;
-            this.detailInfo.totalSubmit = 0;
+            
 
         },
-        getDateTimeByEpochSecond: function(epoch_second){
-            const dateTime = new Date(epoch_second * 1000);
-            return dateTime.toLocaleDateString() + ' ' + dateTime.toLocaleTimeString('ja-JP');
-        },
-        makeToolTipContent: function(currentContent, addingContent){
-            if(currentContent === ''){return addingContent;}
-            else{return currentContent + '<br>' + addingContent;}
-        }
-    },
 
-    created() {
-        this.initDataArea();
-    },
-    watch: {
-        userInfo: function () {
+        // ユーザー変更時, 日付情報変更時アクション
+        createTableData: function(){
+
             // 表示用テーブルを初期化
             this.initProblemsInfoTable();
 
@@ -247,10 +219,35 @@ export default {
 
             const len_userInfo = userInfo_dup.length;
             for (let i=0; i<len_userInfo; i++){
+
+                // コンテストId
                 const curr_constest_id = userInfo_dup[i].contest_id;
 
                 // ABCの情報のみ抽出
                 if(curr_constest_id.indexOf('abc') === -1){ continue; }
+
+
+                // 回答日時(UnixTime)
+                const curr_solved_time = userInfo_dup[i].epoch_second;
+
+                
+                // 日付カラ⇒UnixTime変換
+                const search_time_from = this.dateInfoDataArea.from.selectedDate.getTime() / 1000;
+
+
+                // 日付マデ⇒UnixTime変換
+                const search_time_to = this.dateInfoDataArea.to.selectedDate.getTime() / 1000;
+
+
+                // 回答日時が日付カラ以前である場合は処理しない
+                if(curr_solved_time < search_time_from){
+                    continue;
+                }
+
+                // 回答日時が日付マデ以降である場合は処理しない
+                if(curr_solved_time > search_time_to){
+                    continue;
+                }
 
                 const curr_table_index = this.mappingConstestAndIndex[curr_constest_id];
                 const curr_result = userInfo_dup[i].result;
@@ -345,8 +342,89 @@ export default {
                     }
 
                 }
-
             }
+        
+        },
+
+
+
+        // テーブル情報初期化
+        initProblemsInfoTable: function(){
+            const len_problemsInfoTable = this.problemsInfoTable.length;
+            for (let i = 0; i < len_problemsInfoTable; i++){
+
+                for (let j=0; j<6; j++){
+                    const problemType = 'p' + j;
+                    const problemResult = problemType + '_results';
+                    this.problemsInfoTable[i][problemResult] = '';
+                    const problemClass = problemType + '_class';
+                    this.problemsInfoTable[i][problemClass] = 'problemTableCell tableCell';
+                    const problemResultTooltip = problemType + '_results_tooltip';
+                    this.problemsInfoTable[i][problemResultTooltip] = '';
+                    const hasResult = problemType + '_hasResult';
+                    this.problemsInfoTable[i][hasResult] = false;
+                    const hasAC = problemType + '_hasAC';
+                    this.problemsInfoTable[i][hasAC] = false;
+                }
+            }
+
+            // AC数の初期化
+            this.detailInfo.countAC = 0;
+            // this.detailInfo.countProblems = 0;
+            this.detailInfo.totalAC = 0;
+            this.detailInfo.totalWA = 0;
+            this.detailInfo.totalTLE = 0;
+            this.detailInfo.totalRE = 0;
+            this.detailInfo.totalSolved = 0;
+            this.detailInfo.totalSubmit = 0;
+
+        },
+        getDateTimeByEpochSecond: function(epoch_second){
+            const dateTime = new Date(epoch_second * 1000);
+            return dateTime.toLocaleDateString() + ' ' + dateTime.toLocaleTimeString('ja-JP');
+        },
+        makeToolTipContent: function(currentContent, addingContent){
+            if(currentContent === ''){return addingContent;}
+            else{return currentContent + '<br>' + addingContent;}
+        },
+        // 検索期間再設定
+        resetDateFromTo: function(){
+
+            // 検索期間カラ設定
+            if(this.dateInfo.from.selectedDateText === ''){
+                this.dateInfoDataArea.from.selectedDate = new Date(2013, 10, 12, 21, 0, 0);
+
+            } else {
+                this.dateInfoDataArea.from.selectedDate = this.dateInfo.from.selectedDate;
+            }
+            
+            // 検索期間マデ設定
+            if(this.dateInfo.to.selectedDateText === ''){
+                this.dateInfoDataArea.to.selectedDate = new Date();
+
+            } else{     
+                this.dateInfoDataArea.to.selectedDate = this.dateInfo.to.selectedDate;
+            }
+
+
+
+        }
+    },
+
+    created() {
+        this.initDataArea();
+    },
+    watch: {
+        userInfo: function () {
+            this.createTableData();
+
+        },
+        dateInfo: {
+            handler: function(){
+                this.resetDateFromTo();
+                this.createTableData();
+            },
+            deep: true
         }
     }
 }
@@ -485,8 +563,4 @@ a.resultLink:hover{
 
 }
 
-
-    /* *{
-        outline: 1px solid red;
-    } */
 </style>

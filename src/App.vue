@@ -4,9 +4,9 @@
       <font-awesome-icon icon="user-secret" />
     </div>
     <HeaderArea/>
-    <SearchArea @getUserInfo="getUserInfo"/>
+    <SearchArea @getUserInfo="getUserInfo" @getDateInfo="getDateInfo"/>
     <SelectArea/>
-    <DataArea :userInfo="userInfo" class="dataArea"/>
+    <DataArea :userInfo="userInfo" :dateInfo="dateInfo" class="dataArea"/>
 
   </div>
 </template>
@@ -29,13 +29,17 @@ export default{
   },
   data(){
     return{
-      userInfo: []
+      userInfo: [],
+      dateInfo:{}
     }
   },
   methods: {
 
     getUserInfo(userInfo){
       this.userInfo = userInfo
+    },
+    getDateInfo(dateInfo){
+      this.dateInfo = dateInfo
     }
   }
 }

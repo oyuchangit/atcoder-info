@@ -12,60 +12,64 @@
             </span>
         </div>
 
-        <div v-if="this.detailInfoArea.isVisible" class="detailArea">
-            <div class="detailDiv">
-                <div><h3>Total problems</h3></div>
-                <div>
-                    <div class="totalProblems"><h3>{{this.detailInfo.countProblems}}</h3></div>
+        
+        <!-- 詳細情報エリアのフェードイン・アウト -->
+        <transition name="detailFade">
+
+            <!-- 詳細情報エリア -->
+            <div v-if="this.detailInfoArea.isVisible" class="detailArea">
+                <div class="detailDiv">
+                    <div><h3>Total problems</h3></div>
+                    <div>
+                        <div class="totalProblems"><h3>{{this.detailInfo.countProblems}}</h3></div>
+                    </div>
                 </div>
+
+                <div class="detailDiv">
+                    <div><h3>Number of submissions</h3></div>
+                    <div class="infoArea">
+                        <div>
+                            <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSubmit}}</span> 
+                        </div>
+                        <div>
+                            <div class="detailLabel">AC</div> : <span class="number">{{this.detailInfo.totalAC}}</span>
+                        </div>
+                        <div>
+                            <div class="detailLabel">WA + TLE + RE</div> : <span class="number">{{this.detailInfoArea.totalNotAC}}</span>
+                        </div>
+
+                        <div>
+                            <div class="detailLabel">WA</div> : <span class="number">{{this.detailInfo.totalWA}}</span>
+                        </div>
+                        <div>
+                            <div class="detailLabel">TLE</div> : <span class="number">{{this.detailInfo.totalTLE}}</span>
+                        </div>
+                        <div>
+                            <div class="detailLabel">RE</div> : <span class="number">{{this.detailInfo.totalRE}}</span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="detailDiv">
+                    <div><h3>Number of results</h3></div>
+                    <div>
+                        <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSolved}}</span>
+                    </div>
+
+                    <div>
+                        <div class="detailLabel">AC</div> : <span class="number">{{this.detailInfo.countAC}}</span>
+                    </div>
+                    <div>
+                        <div class="detailLabel">WA + TLE + RE</div> : <span class="number">{{this.detailInfoArea.countNotAC}}</span>
+                    </div>
+
+
+                </div>
+
             </div>
-
-            <div class="detailDiv">
-                <div><h3>Number of submissions</h3></div>
-                <div class="infoArea">
-                    <div>
-                        <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSubmit}}</span> 
-                    </div>
-                    <div>
-                        <div class="detailLabel">AC</div> : <span class="number">{{this.detailInfo.totalAC}}</span>
-                    </div>
-                    <div>
-                        <div class="detailLabel">WA + TLE + RE</div> : <span class="number">{{this.detailInfoArea.totalNotAC}}</span>
-                    </div>
-
-                    <div>
-                        <div class="detailLabel">WA</div> : <span class="number">{{this.detailInfo.totalWA}}</span>
-                    </div>
-                    <div>
-                        <div class="detailLabel">TLE</div> : <span class="number">{{this.detailInfo.totalTLE}}</span>
-                    </div>
-                    <div>
-                        <div class="detailLabel">RE</div> : <span class="number">{{this.detailInfo.totalRE}}</span>
-                    </div>
-
-                </div>
-                <!-- <div class="annotation">* Information based on submission</div> -->
-
-
-            </div>
-            <div class="detailDiv">
-                <div><h3>Number of results</h3></div>
-                <div>
-                    <div class="detailLabel">Total</div> : <span class="number">{{this.detailInfo.totalSolved}}</span>
-                </div>
-
-                <div>
-                    <div class="detailLabel">AC</div> : <span class="number">{{this.detailInfo.countAC}}</span>
-                </div>
-                <div>
-                    <div class="detailLabel">WA + TLE + RE</div> : <span class="number">{{this.detailInfoArea.countNotAC}}</span>
-                </div>
-                <!-- <div class="annotation">* Information based on result</div> -->
-
-
-            </div>
-
-        </div>
+        </transition>
       
     </div>
 
@@ -166,6 +170,14 @@ export default {
 }
 .detailDiv .totalProblems{
     text-align: center;
+}
+
+.detailFade-enter-active, .detailFade-leave-active {
+  transition: opacity .5s;
+}
+
+.detailFade-enter, .detailFade-leave-to {
+  opacity: 0;
 }
 
 </style>
